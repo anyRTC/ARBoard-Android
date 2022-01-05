@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/login_bg"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:text="@string/app_share"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:flow_verticalBias=".45"
+        app:layout_constraintBottom_toBottomOf="@id/bg"
+        app:layout_constraintLeft_toLeftOf="@id/bg"
+        app:layout_constraintTop_toTopOf="@id/bg" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:background="@drawable/layer_login_edit_bg"
+        android:ellipsize="end"
+        android:hint="@string/username_please"
+        android:inputType="text"
+        android:maxLength="32"
+        android:maxLines="1"
+        android:textColor="#5A5A67"
+        android:textColorHint="#CCCCCC"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/bg" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/room_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:background="@drawable/layer_login_edit_bg"
+        android:ellipsize="end"
+        android:hint="@string/roomId"
+        android:inputType="number"
+        android:maxLength="9"
+        android:maxLines="1"
+        android:textColor="#5A5A67"
+        android:textColorHint="#CCCCCC"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/username" />
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:id="@+id/login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="28dp"
+        android:background="@drawable/selector_login_bg"
+        android:button="@null"
+        android:checked="false"
+        android:gravity="center"
+        android:text="@string/login"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/room_id" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="42dp"
+        android:text="@string/powered"
+        android:textColor="#999999"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

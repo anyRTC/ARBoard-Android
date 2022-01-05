@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/custom_progress.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/custom_seekbar_style.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/custom_shadow.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/custom_thumb.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/layer_login_edit_bg.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/layer_toolbar_bg.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/selector_arrow.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/selector_circle.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/selector_eraser.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/selector_laser.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/selector_line.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/selector_login_bg.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/selector_mouse.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/selector_oval.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/selector_pencil.xml" value="0.48385416666666664" />
+        <entry key="app/src/main/res/drawable/selector_rectangle.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/selector_select_rectangle.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/selector_text.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/shape_circle_bg.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/shape_login_bg.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/shape_login_bg_enable.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/shape_login_edit_bg.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/shape_menu_btn_bg.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/drawable/shape_tools_menu_bg.xml" value="0.4630208333333333" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.4427083333333333" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.4" />
+        <entry key="app/src/main/res/layout/item_test.xml" value="0.446875" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

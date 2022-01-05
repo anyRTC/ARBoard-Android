@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/toolbar_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="4dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:contentInsetEnd="20dp"
+                app:contentInsetStart="0dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/menu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/menu"
+                    android:textColor="#294BFF"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/room_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="#5A5A67"
+                    android:textSize="14sp"
+                    tools:text="9527" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/exit"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/exit" />
+            </androidx.appcompat.widget.Toolbar>
+        </androidx.cardview.widget.CardView>
+
+        <FrameLayout
+            android:id="@+id/board_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="#E3E3E3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_card" />
+
+        <View
+            android:id="@+id/menu_mask"
+			android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/menu_card"
+            android:layout_width="280dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="30dp"
+            android:visibility="gone"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/title_about_graffiti"
+                        style="@style/text_h2title"
+                        android:text="@string/aboutGraffiti" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/title_editable"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/boardEditable"
+                            android:textColor="#757575"
+                            android:textSize="12sp" />
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/board_editable"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:checked="true" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/select_tools"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp">
+
+                        <TextView
+                            android:id="@+id/tools_selecter"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/selectTools"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/tools_preview"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/mouse" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/graffiti_color"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp">
+
+                        <TextView
+                            android:id="@+id/painter_title"
+							android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/painterColor"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+
+                        <io.anyrtc.arboarddemo.widget.RoundBackgroundView
+                            android:id="@+id/graffiti_color_preview"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            app:round_background_color="@color/black"
+                            app:round_radius="4dp" />
+                        <!--app:round_background_color="#294BFF"-->
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/font_color"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp">
+
+                        <TextView
+                            android:id="@+id/font_color_title"
+							android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/fontColor"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+
+                        <io.anyrtc.arboarddemo.widget.RoundBackgroundView
+                            android:id="@+id/font_color_preview"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            app:round_background_color="@color/black"
+                            app:round_radius="4dp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/graffiti_tools"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp">
+
+                        <TextView
+                            android:id="@+id/graffiti_thickness_title"
+							android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/graffitiThickness"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+
+                        <!--<SeekBar
+                            android:layout_width="0dp"
+                            android:layout_height="10dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="30dp"
+                            android:layout_weight="1"
+                            android:max="100"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="4dp"
+                            android:progress="30"
+                            android:progressDrawable="@drawable/custom_seekbar_style"
+                            android:splitTrack="false"
+                            android:thumb="@drawable/custom_thumb" />-->
+                        <io.anyrtc.arboarddemo.widget.SeekBarWidget
+                            android:id="@+id/graffiti_seek"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:paddingStart="15dp"
+                            app:seek_circleRadius="4dp"
+                            app:seek_circleStrokeColor="@color/white"
+                            app:seek_circleStrokeWidth="2dp"
+                            app:seek_lineHeight="2dp"
+                            app:seek_maxColor="#294BFF"
+                            app:seek_maxProgress="10"
+                            app:seek_progress="3"
+                            tools:ignore="RtlSymmetry" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/font_size"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp">
+
+                        <TextView
+                            android:id="@+id/font_size_title"
+							android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/fontSize"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+
+                        <io.anyrtc.arboarddemo.widget.SeekBarWidget
+                            android:id="@+id/font_size_seek"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:paddingStart="15dp"
+                            app:seek_circleRadius="4dp"
+                            app:seek_circleStrokeColor="@color/white"
+                            app:seek_circleStrokeWidth="2dp"
+                            app:seek_lineHeight="2dp"
+                            app:seek_maxColor="#294BFF"
+                            app:seek_maxProgress="50"
+                            app:seek_minProgress="10"
+                            app:seek_progress="14"
+                            tools:ignore="RtlSymmetry" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <TextView
+                        android:id="@+id/undo"
+                        style="@style/style_menu_btn"
+                        android:text="@string/undo" />
+
+                    <TextView
+                        android:id="@+id/redo"
+                        style="@style/style_menu_btn"
+                        android:text="@string/redo" />
+
+                    <TextView
+                        android:id="@+id/clear_graffiti"
+                        style="@style/style_menu_btn"
+                        android:text="@string/clearGraffiti" />
+
+                    <TextView
+                        android:id="@+id/clear_all"
+                        style="@style/style_menu_btn"
+                        android:text="@string/clearAll" />
+
+                    <TextView
+                        android:id="@+id/reset"
+                        style="@style/style_menu_btn"
+                        android:text="@string/reset" />
+
+                    <TextView
+                        android:id="@+id/title_about_board"
+                        style="@style/text_h2title"
+                        android:text="@string/aboutBoard"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/board_editable" />
+
+                    <TextView
+                        android:id="@+id/add"
+                        style="@style/style_menu_btn"
+                        android:text="@string/add" />
+
+                    <TextView
+                        android:id="@+id/delete"
+                        style="@style/style_menu_btn"
+                        android:text="@string/delete" />
+
+                    <TextView
+                        android:id="@+id/prev_page"
+                        style="@style/style_menu_btn"
+                        android:text="@string/prevPage" />
+
+                    <TextView
+                        android:id="@+id/next_page"
+                        style="@style/style_menu_btn"
+                        android:text="@string/nextPage" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/board_scale"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/boardScale"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+
+                        <io.anyrtc.arboarddemo.widget.SeekBarWidget
+                            android:id="@+id/board_scale_seek"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:paddingStart="15dp"
+                            app:seek_circleRadius="4dp"
+                            app:seek_circleStrokeColor="@color/white"
+                            app:seek_circleStrokeWidth="2dp"
+                            app:seek_lineHeight="2dp"
+                            app:seek_maxColor="#294BFF"
+                            app:seek_maxProgress="300"
+                            app:seek_minProgress="100"
+                            app:seek_progress="100"
+                            tools:ignore="RtlSymmetry" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/board_color"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/backgroundColor"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+
+                        <io.anyrtc.arboarddemo.widget.RoundBackgroundView
+                            android:id="@+id/board_color_preview"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            app:round_background_color="#F3F3F3"
+                            app:round_radius="4dp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.core.widget.NestedScrollView>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/behavior_mask"
+		android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        android:visibility="gone" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tools_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_tools_menu_bg"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <TextView
+            android:id="@+id/tools_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="12dp"
+            android:text="@string/cancel"
+            android:textColor="#999999"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tools_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="12dp"
+            android:text="@string/confirm"
+            android:textColor="#294BFF"
+            android:textSize="14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--<TextView
+            android:id="@+id/tools_title_tool"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingStart="20dp"
+            android:paddingTop="15dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="15dp"
+            android:text="@string/tools"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/tools_confirm" /> -->
+
+        <RadioGroup
+            android:id="@+id/radio_group_tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/tools_confirm">
+
+            <RadioButton
+                android:id="@+id/radio_mouse"
+                style="@style/style_radio_btn"
+                android:drawableTop="@drawable/selector_mouse"
+                android:text="@string/mouse" />
+
+            <RadioButton
+                android:id="@+id/radio_eraser"
+                style="@style/style_radio_btn"
+                android:drawableTop="@drawable/selector_eraser"
+                android:text="@string/eraser" />
+
+            <RadioButton
+                android:id="@+id/radio_laser"
+                style="@style/style_radio_btn"
+                android:drawableTop="@drawable/selector_laser_pointer"
+                android:text="@string/laserPointer" />
+
+            <RadioButton
+                android:id="@+id/radio_text"
+                style="@style/style_radio_btn"
+                android:drawableTop="@drawable/selector_text"
+                android:text="@string/textTool" />
+
+            <RadioButton
+                android:id="@+id/radio_select"
+                style="@style/style_radio_btn"
+                android:drawableTop="@drawable/selector_select_rectangle"
+                android:text="@string/selectRectangle" />
+        </RadioGroup>
+
+        <!--<TextView
+            android:id="@+id/tools_title_graffiti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingStart="20dp"
+            android:paddingTop="15dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="15dp"
+            android:text="@string/graffiti"
+            android:textColor="#333333"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/radio_group_tools" /> -->
+
+        <RadioGroup
+            android:id="@+id/radio_group_graffiti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="50dp"
+            app:layout_constraintTop_toBottomOf="@id/radio_group_tools">
+
+            <RadioButton
+                android:id="@+id/radio_pencil"
+                style="@style/style_radio_btn"
+                android:drawableTop="@drawable/selector_pencil"
+                android:text="@string/pencil" />
+
+            <RadioButton
+                android:id="@+id/radio_rectangle"
+                style="@style/style_radio_btn"
+                android:drawableTop="@drawable/selector_rectangle"
+                android:text="@string/rectangle" />
+
+            <RadioButton
+                android:id="@+id/radio_oval"
+                style="@style/style_radio_btn"
+                android:drawableTop="@drawable/selector_oval"
+                android:text="@string/oval" />
+
+            <RadioButton
+                android:id="@+id/radio_arrows"
+                style="@style/style_radio_btn"
+                android:drawableTop="@drawable/selector_arrow"
+                android:text="@string/arrows" />
+
+            <RadioButton
+                android:id="@+id/radio_line"
+                style="@style/style_radio_btn"
+                android:drawableTop="@drawable/selector_line"
+                android:text="@string/line" />
+        </RadioGroup>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/menu_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="radio_group_tools,radio_group_graffiti" />
+
+        <io.anyrtc.arboarddemo.widget.RoundBackgroundView
+            android:id="@+id/current_color"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            app:layout_constraintBottom_toBottomOf="@id/tools_cancel"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tools_cancel"
+            app:round_background_color="@color/purple_500"
+            app:round_border_color="@color/black"
+            app:round_border_padding="2dp"
+            app:round_border_width="1dp"
+            app:round_radius="12dp" />
+
+        <TextView
+            android:id="@+id/seek_title_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="@string/red"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tools_cancel" />
+
+        <io.anyrtc.arboarddemo.widget.SeekBarWidget
+            android:id="@+id/seek_red"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="45dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/seek_title_red"
+            app:layout_constraintLeft_toRightOf="@id/seek_title_red"
+            app:layout_constraintRight_toLeftOf="@id/red_seek_num"
+            app:layout_constraintTop_toTopOf="@id/seek_title_red"
+            app:seek_circleRadius="3dp"
+            app:seek_circleStrokeWidth="2dp"
+            app:seek_lineHeight="2dp"
+            app:seek_maxColor="#FF0000"
+            app:seek_maxProgress="255"
+            app:seek_progress="175"
+            app:seek_startColor="@color/black" />
+
+        <TextView
+            android:id="@+id/red_seek_num"
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="175"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/seek_title_red"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/seek_title_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="@string/green"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/seek_title_red" />
+
+        <io.anyrtc.arboarddemo.widget.SeekBarWidget
+            android:id="@+id/seek_green"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="45dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/seek_title_green"
+            app:layout_constraintLeft_toRightOf="@id/seek_title_green"
+            app:layout_constraintRight_toLeftOf="@id/green_seek_num"
+            app:layout_constraintTop_toTopOf="@id/seek_title_green"
+            app:seek_circleRadius="3dp"
+            app:seek_circleStrokeWidth="2dp"
+            app:seek_lineHeight="2dp"
+            app:seek_maxColor="#00FF00"
+            app:seek_maxProgress="255"
+            app:seek_progress="175"
+            app:seek_startColor="@color/black" />
+
+        <TextView
+            android:id="@+id/green_seek_num"
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="175"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/seek_title_green"
+            tools:ignore="HardcodedText,TooManyViews" />
+
+        <TextView
+            android:id="@+id/seek_title_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="@string/blue"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/seek_title_green"
+            tools:ignore="TooManyViews" />
+
+        <io.anyrtc.arboarddemo.widget.SeekBarWidget
+            android:id="@+id/seek_blue"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="45dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/seek_title_blue"
+            app:layout_constraintLeft_toRightOf="@id/seek_title_blue"
+            app:layout_constraintRight_toLeftOf="@id/blue_seek_num"
+            app:layout_constraintTop_toTopOf="@id/seek_title_blue"
+            app:seek_circleRadius="3dp"
+            app:seek_circleStrokeWidth="2dp"
+            app:seek_lineHeight="2dp"
+            app:seek_maxColor="#0000FF"
+            app:seek_maxProgress="255"
+            app:seek_progress="175"
+            app:seek_startColor="@color/black" />
+
+        <TextView
+            android:id="@+id/blue_seek_num"
+            android:layout_width="28dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:text="175"
+            android:textColor="#666666"
+            android:textSize="14sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/seek_title_blue"
+            tools:ignore="HardcodedText" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/color_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="current_color,seek_title_red,seek_red,red_seek_num,seek_title_green,seek_green,green_seek_num,seek_title_blue,seek_blue,blue_seek_num" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
