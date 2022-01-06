@@ -432,7 +432,7 @@ class MainActivity : AppCompatActivity() {
     override fun onGotoBoard(p0: String?, p1: String?) {
     }
 
-    override fun onBoardPrepared() {
+    override fun onHistoryDataSyncCompleted() {
       // 初始化完成
       kit.brushColor = "#000000"
       kit.textColor = "#000000"
