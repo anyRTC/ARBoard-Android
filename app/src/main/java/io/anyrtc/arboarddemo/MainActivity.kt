@@ -5,9 +5,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.addListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -15,6 +17,8 @@ import com.gyf.immersionbar.ImmersionBar
 import io.anyrtc.arboard.ARBoardEnumerates.*
 import io.anyrtc.arboard.ARBoardHandler
 import io.anyrtc.arboard.ARBoardKit
+import io.anyrtc.arboard.ARBoardStructures.ARBoardAuthParam
+import io.anyrtc.arboard.ARBoardStructures.ARBoardBaseParam
 import io.anyrtc.arboarddemo.databinding.ActivityMainBinding
 import io.anyrtc.arboarddemo.utils.ScreenUtils
 import io.anyrtc.arboarddemo.widget.RoundBackgroundView
@@ -48,34 +52,38 @@ class MainActivity : AppCompatActivity() {
     val channel = intent.getStringExtra("channel")
 
     val appId = resources.getString(R.string.whiteboard_app_id)
-    kit = ARBoardKit(this, appId, mHandler)
-    kit.joinChannelByToken("123456", channel, uid) {
-    }
+    val param = ARBoardBaseParam()
+    param.config.ratio = "3:4"
+    param.config.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_NONE
+    kit = ARBoardKit(this, ARBoardAuthParam(appId, "", uid), channel, param, mHandler)
+    showLoadingDialog()
+    //kit = ARBoardKit(this, appId, mHandler)
+    //kit.joinChannelByToken("123456", channel, uid) {
+    //}
     val boardView = kit.arBoardView
     boardView.setBackgroundColor(Color.TRANSPARENT)
     binding.boardParent.addView(boardView)
 
-    val scale = kit.boardScale
     initWidget()
   }
 
   private var checkBoxCaches = CheckBoxCaches()
-  private fun initWidget() {
-    val behavior = BottomSheetBehavior.from(binding.toolsMenu)
+  private fun initWidget() = binding.run {
+    val behavior = BottomSheetBehavior.from(toolsMenu)
 
-    binding.boardEditable.setOnCheckedChangeListener { _, isChecked ->
+    boardEditable.setOnCheckedChangeListener { _, isChecked ->
       kit.isDrawEnable = isChecked
       if (isChecked) enableGraffiti() else disableGraffiti()
     }
-    binding.radioMouse.isChecked = true
+    radioMouse.isChecked = true
 
-    binding.boardParent.requestFocus()
+    boardParent.requestFocus()
     val radioGroupConfirmClick = View.OnClickListener {
       val _checkedToolType = checkBoxCaches.selectedTool
       if (_checkedToolType != null)
         kit.toolType = _checkedToolType
       if (-1 != checkBoxCaches.selectedImg)
-        binding.toolsPreview.setImageResource(checkBoxCaches.selectedImg)
+        toolsPreview.setImageResource(checkBoxCaches.selectedImg)
       if (-1 != checkBoxCaches.selectedRadioGroup)
         checkBoxCaches.radioGroup = checkBoxCaches.selectedRadioGroup
       checkBoxCaches.currCheckedId = checkBoxCaches.selectedCheckedId
@@ -86,38 +94,38 @@ class MainActivity : AppCompatActivity() {
 
       behavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
-    binding.radioGroupTools.setOnCheckedChangeListener { _, checkedId ->
+    radioGroupTools.setOnCheckedChangeListener { _, checkedId ->
       if (checkedId == -1)
         return@setOnCheckedChangeListener
 
-      binding.radioGroupGraffiti.clearCheck()
+      radioGroupGraffiti.clearCheck()
       when (checkedId) {
         R.id.radio_mouse -> {
-          //binding.toolsPreview.setImageResource(R.drawable.mouse)
+          //toolsPreview.setImageResource(R.drawable.mouse)
           //kit.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_NONE
           checkBoxCaches.selectedImg = R.drawable.mouse
           checkBoxCaches.selectedTool = ARBoardToolType.AR_BOARD_TOOL_TYPE_NONE
         }
         R.id.radio_eraser -> {
-          //binding.toolsPreview.setImageResource(R.drawable.eraser)
+          //toolsPreview.setImageResource(R.drawable.eraser)
           //kit.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_ERASER
           checkBoxCaches.selectedImg = R.drawable.eraser
           checkBoxCaches.selectedTool = ARBoardToolType.AR_BOARD_TOOL_TYPE_ERASER
         }
         R.id.radio_laser -> {
-          //binding.toolsPreview.setImageResource(R.drawable.laser_pointer)
+          //toolsPreview.setImageResource(R.drawable.laser_pointer)
           //kit.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_LASER
           checkBoxCaches.selectedImg = R.drawable.laser_pointer
           checkBoxCaches.selectedTool = ARBoardToolType.AR_BOARD_TOOL_TYPE_LASER
         }
         R.id.radio_text -> {
-          //binding.toolsPreview.setImageResource(R.drawable.text)
+          //toolsPreview.setImageResource(R.drawable.text)
           //kit.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_TEXT
           checkBoxCaches.selectedImg = R.drawable.text
           checkBoxCaches.selectedTool = ARBoardToolType.AR_BOARD_TOOL_TYPE_TEXT
         }
         R.id.radio_select -> {
-          //binding.toolsPreview.setImageResource(R.drawable.select_rectangle)
+          //toolsPreview.setImageResource(R.drawable.select_rectangle)
           //kit.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_POINT_SELECT
           checkBoxCaches.selectedImg = R.drawable.select_rectangle
           checkBoxCaches.selectedTool = ARBoardToolType.AR_BOARD_TOOL_TYPE_POINT_SELECT
@@ -125,41 +133,41 @@ class MainActivity : AppCompatActivity() {
       }
       checkBoxCaches.selectedRadioGroup = 0
       checkBoxCaches.selectedCheckedId = checkedId
-      binding.radioGroupTools.check(checkedId)
-      binding.toolsConfirm.setOnClickListener(radioGroupConfirmClick)
+      radioGroupTools.check(checkedId)
+      toolsConfirm.setOnClickListener(radioGroupConfirmClick)
     }
-    binding.radioGroupGraffiti.setOnCheckedChangeListener { _, checkedId ->
+    radioGroupGraffiti.setOnCheckedChangeListener { _, checkedId ->
       if (checkedId == -1)
         return@setOnCheckedChangeListener
 
-      binding.radioGroupTools.clearCheck()
+      radioGroupTools.clearCheck()
       when (checkedId) {
         R.id.radio_pencil -> {
-          //binding.toolsPreview.setImageResource(R.drawable.menu_pencil)
+          //toolsPreview.setImageResource(R.drawable.menu_pencil)
           //kit.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_PEN
           checkBoxCaches.selectedImg = R.drawable.menu_pencil
           checkBoxCaches.selectedTool = ARBoardToolType.AR_BOARD_TOOL_TYPE_PEN
         }
         R.id.radio_rectangle -> {
-          //binding.toolsPreview.setImageResource(R.drawable.select_rectangle)
+          //toolsPreview.setImageResource(R.drawable.select_rectangle)
           //kit.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_RECT
           checkBoxCaches.selectedImg = R.drawable.menu_rectangle
           checkBoxCaches.selectedTool = ARBoardToolType.AR_BOARD_TOOL_TYPE_RECT
         }
         R.id.radio_oval -> {
-          //binding.toolsPreview.setImageResource(R.drawable.menu_oval)
+          //toolsPreview.setImageResource(R.drawable.menu_oval)
           //kit.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_OVAL
           checkBoxCaches.selectedImg = R.drawable.menu_oval
           checkBoxCaches.selectedTool = ARBoardToolType.AR_BOARD_TOOL_TYPE_OVAL
         }
         R.id.radio_arrows -> {
-          //binding.toolsPreview.setImageResource(R.drawable.menu_arrows)
+          //toolsPreview.setImageResource(R.drawable.menu_arrows)
           //kit.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_ARROW
           checkBoxCaches.selectedImg = R.drawable.menu_arrows
           checkBoxCaches.selectedTool = ARBoardToolType.AR_BOARD_TOOL_TYPE_ARROW
         }
         R.id.radio_line -> {
-          //binding.toolsPreview.setImageResource(R.drawable.menu_line)
+          //toolsPreview.setImageResource(R.drawable.menu_line)
           //kit.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_LINE
           checkBoxCaches.selectedImg = R.drawable.menu_line
           checkBoxCaches.selectedTool = ARBoardToolType.AR_BOARD_TOOL_TYPE_LINE
@@ -167,26 +175,26 @@ class MainActivity : AppCompatActivity() {
       }
       checkBoxCaches.selectedRadioGroup = 1
       checkBoxCaches.selectedCheckedId = checkedId
-      binding.radioGroupGraffiti.check(checkedId)
-      binding.toolsConfirm.setOnClickListener(radioGroupConfirmClick)
+      radioGroupGraffiti.check(checkedId)
+      toolsConfirm.setOnClickListener(radioGroupConfirmClick)
     }
-    binding.menuMask.setOnClickListener {
+    menuMask.setOnClickListener {
       changeMenuStatus(true)
     }
-    binding.menu.setOnClickListener {
+    menu.setOnClickListener {
       toggleMenuStatus()
     }
 
-    binding.seekRed.setOnProgressChangListener { progress ->
-      binding.redSeekNum.text = "$progress"
+    seekRed.setOnProgressChangListener { progress ->
+      redSeekNum.text = "$progress"
       refreshColors()
     }
-    binding.seekGreen.setOnProgressChangListener { progress ->
-      binding.greenSeekNum.text = "$progress"
+    seekGreen.setOnProgressChangListener { progress ->
+      greenSeekNum.text = "$progress"
       refreshColors()
     }
-    binding.seekBlue.setOnProgressChangListener { progress ->
-      binding.blueSeekNum.text = "$progress"
+    seekBlue.setOnProgressChangListener { progress ->
+      blueSeekNum.text = "$progress"
       refreshColors()
     }
     refreshColors()
@@ -196,71 +204,71 @@ class MainActivity : AppCompatActivity() {
     behavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
       override fun onStateChanged(bottomSheet: View, newState: Int) {
         if (newState == BottomSheetBehavior.STATE_COLLAPSED)
-          binding.behaviorMask.visibility = View.GONE
+          behaviorMask.visibility = View.GONE
       }
 
       override fun onSlide(bottomSheet: View, slideOffset: Float) {
-        if (slideOffset > 0.0f && binding.behaviorMask.visibility == View.GONE)
-          binding.behaviorMask.visibility = View.VISIBLE
+        if (slideOffset > 0.0f && behaviorMask.visibility == View.GONE)
+          behaviorMask.visibility = View.VISIBLE
 
         val color = colorTransition.getValue(slideOffset)
-        binding.behaviorMask.setBackgroundColor(color)
+        behaviorMask.setBackgroundColor(color)
       }
     })
     behavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
-    binding.toolsCancel.setOnClickListener {
+    toolsCancel.setOnClickListener {
       behavior.state = BottomSheetBehavior.STATE_COLLAPSED
       if (checkBoxCaches.radioGroup == 0) {
-        binding.radioGroupGraffiti.clearCheck()
-        binding.radioGroupTools.check(checkBoxCaches.currCheckedId)
+        radioGroupGraffiti.clearCheck()
+        radioGroupTools.check(checkBoxCaches.currCheckedId)
       } else {
-        binding.radioGroupTools.clearCheck()
-        binding.radioGroupGraffiti.check(checkBoxCaches.currCheckedId)
+        radioGroupTools.clearCheck()
+        radioGroupGraffiti.check(checkBoxCaches.currCheckedId)
       }
     }
 
-    binding.selectTools.setOnClickListener {
-      binding.colorGroup.visibility = View.GONE
-      binding.menuGroup.visibility = View.VISIBLE
+    selectTools.setOnClickListener {
+      colorGroup.visibility = View.GONE
+      menuGroup.visibility = View.VISIBLE
       behavior.state = BottomSheetBehavior.STATE_EXPANDED
 
-      binding.toolsConfirm.setOnClickListener {
+      toolsConfirm.setOnClickListener {
         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
       }
     }
-    binding.behaviorMask.setOnClickListener {
+    behaviorMask.setOnClickListener {
       behavior.state = BottomSheetBehavior.STATE_COLLAPSED
       if (checkBoxCaches.radioGroup == 0) {
-        binding.radioGroupGraffiti.clearCheck()
-        binding.radioGroupTools.check(checkBoxCaches.currCheckedId)
+        radioGroupGraffiti.clearCheck()
+        radioGroupTools.check(checkBoxCaches.currCheckedId)
       } else {
-        binding.radioGroupTools.clearCheck()
-        binding.radioGroupGraffiti.check(checkBoxCaches.currCheckedId)
+        radioGroupTools.clearCheck()
+        radioGroupGraffiti.check(checkBoxCaches.currCheckedId)
       }
     }
 
     val selectColorClick = View.OnClickListener { parent ->
-      binding.colorGroup.visibility = View.VISIBLE
-      binding.menuGroup.visibility = View.GONE
+      colorGroup.visibility = View.VISIBLE
+      menuGroup.visibility = View.GONE
       behavior.state = BottomSheetBehavior.STATE_EXPANDED
 
       val colorPreviewView = (parent as ViewGroup).getChildAt(1) as RoundBackgroundView
 
-      val currentColor = colorPreviewView.backgroundColor
-      val redNum = Color.red(currentColor)
-      val greenNum = Color.green(currentColor)
-      val blueNum = Color.blue(currentColor)
-      binding.redSeekNum.text = "$redNum"
-      binding.greenSeekNum.text = "$greenNum"
-      binding.blueSeekNum.text = "$blueNum"
+      val previewColor = colorPreviewView.backgroundColor
+      val redNum = Color.red(previewColor)
+      val greenNum = Color.green(previewColor)
+      val blueNum = Color.blue(previewColor)
+      redSeekNum.text = "$redNum"
+      greenSeekNum.text = "$greenNum"
+      blueSeekNum.text = "$blueNum"
 
-      binding.seekRed.progress = redNum
-      binding.seekGreen.progress = greenNum
-      binding.seekBlue.progress = blueNum
-      binding.currentColor.backgroundColor = currentColor
+      seekRed.progress = redNum
+      seekGreen.progress = greenNum
+      seekBlue.progress = blueNum
+      currentColor.backgroundColor = previewColor
 
-      binding.toolsConfirm.setOnClickListener {
+      toolsConfirm.setOnClickListener {
         val color = refreshColors()
         val strColor = String.format("#%06X", 0xFFFFFF and color)
 
@@ -274,38 +282,73 @@ class MainActivity : AppCompatActivity() {
         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
       }
     }
-    binding.graffitiColor.setOnClickListener(selectColorClick)
-    binding.fontColor.setOnClickListener(selectColorClick)
-    binding.boardColor.setOnClickListener(selectColorClick)
+    graffitiColor.setOnClickListener(selectColorClick)
+    fontColor.setOnClickListener(selectColorClick)
+    boardColor.setOnClickListener(selectColorClick)
 
     // buttons
-    binding.undo.setOnClickListener { kit.undo() }
-    binding.redo.setOnClickListener { kit.redo() }
-    binding.clearGraffiti.setOnClickListener { kit.clearDraws() }
-    binding.clearAll.setOnClickListener {
+    undo.setOnClickListener { kit.undo() }
+    redo.setOnClickListener { kit.redo() }
+    clearGraffiti.setOnClickListener { kit.clearDraws() }
+    clearAll.setOnClickListener {
       kit.clear()
-      binding.boardColorPreview.backgroundColor = Color.WHITE
+      boardColorPreview.backgroundColor = Color.WHITE
     }
-    binding.reset.setOnClickListener { kit.reset() }
-    binding.add.setOnClickListener { kit.addBoard() }
-    binding.delete.setOnClickListener { kit.deleteBoard() }
-    binding.prevPage.setOnClickListener { kit.prevBoard() }// previous
-    binding.nextPage.setOnClickListener { kit.nextBoard() }
+    reset.setOnClickListener { kit.reset() }
+    selectImage.setOnClickListener { showSetImageDialog() }
+    add.setOnClickListener { kit.addBoard() }
+    delete.setOnClickListener { kit.deleteBoard() }
+    prevPage.setOnClickListener { kit.prevBoard() }// previous
+    nextPage.setOnClickListener { kit.nextBoard() }
 
     // SeekBars
-    binding.graffitiSeek.setOnProgressChangListener {
+    graffitiSeek.setOnProgressChangListener {
       kit.brushThin = it
     }
-    binding.fontSizeSeek.setOnProgressChangListener {
+    fontSizeSeek.setOnProgressChangListener {
       kit.textSize = it
     }
-    binding.boardScaleSeek.setOnProgressChangListener {
+    boardScaleSeek.setOnProgressChangListener {
       kit.boardScale = it
     }
-    binding.exit.setOnClickListener {
+    exit.setOnClickListener {
       finish()
-      startActivity(Intent(this, LoginActivity::class.java))
+      startActivity(Intent(this@MainActivity, LoginActivity::class.java))
     }
+    dialogParent.setOnClickListener { }
+    imageDialogCancel.setOnClickListener { dismissSetImageDialog() }
+    imageDialogConfirm.setOnClickListener {
+      val src = imageDialogEdit.text.toString()
+      if (src.isBlank()) {
+        Toast.makeText(it.context, "不能为空", Toast.LENGTH_SHORT).show()
+        return@setOnClickListener
+      }
+      kit.setBackgroundImage(src, ARBoardFillMode.AR_BOARD_BACKGROUND_FILL_MODE_CONTAIN)
+      dismissSetImageDialog()
+    }
+  }
+
+  private fun dismissLoadingDialog() = binding.run {
+    dialogParent.visibility = View.GONE
+    loadingGroup.visibility = View.GONE
+  }
+
+  private fun showLoadingDialog() = binding.run {
+    dialogParent.visibility = View.VISIBLE
+    loadingGroup.visibility = View.VISIBLE
+    imageDialogGroup.visibility = View.GONE
+  }
+
+  private fun dismissSetImageDialog() = binding.run {
+    dialogParent.visibility = View.GONE
+    imageDialogGroup.visibility = View.GONE
+    imageDialogEdit.setText("")
+  }
+
+  private fun showSetImageDialog() = binding.run {
+    dialogParent.visibility = View.VISIBLE
+    imageDialogGroup.visibility = View.VISIBLE
+    loadingGroup.visibility = View.GONE
   }
 
   private fun refreshColors(): Int {
@@ -412,9 +455,7 @@ class MainActivity : AppCompatActivity() {
 
   private inner class MyHandler : ARBoardHandler {
     override fun onOccurError(p0: ARBoardErrorCode?, p1: String?) {
-    }
-
-    override fun onJoinChannel(p0: String?, p1: String?) {
+      Log.e("===", "onOccurError,\t\tp0=$p0, p1=$p1")
     }
 
     override fun connectionChangedToState(
@@ -434,10 +475,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onHistoryDataSyncCompleted() {
       // 初始化完成
-      kit.brushColor = "#000000"
-      kit.textColor = "#000000"
-      val color = kit.backgroundColor
-      binding.boardColorPreview.backgroundColor = Color.parseColor(color)
+      runOnUiThread {
+        kit.brushColor = "#000000"
+        kit.textColor = "#000000"
+        val color = kit.backgroundColor
+        binding.boardColorPreview.backgroundColor = Color.parseColor(color)
+        dismissLoadingDialog()
+      }
       //binding.boardColorPreview.backgroundColor = Color.parseColor(kit.backgroundColor)
     }
 
@@ -453,10 +497,20 @@ class MainActivity : AppCompatActivity() {
     override fun onScaleChanged(p0: String?, p1: Int) {
     }
 
-    override fun onBoardReset(p0: String?, p1: String?) {
+    override fun onBoardReset() {
     }
 
-    override fun onBoardClear(p0: String?, p1: String?) {
+    override fun onBoardClear(p0: String?, p1: String?, p2: Boolean) {
+    }
+
+    override fun onBoardImageStatusChanged(
+      boardId: String?,
+      fileId: String?,
+      status: ARBoardImageStatus?,
+      src: String?,
+      fillMode: ARBoardFillMode?
+    ) {
+      Log.e("===", "status=$status, src=$src, fillMode=$fillMode")
     }
   }
 

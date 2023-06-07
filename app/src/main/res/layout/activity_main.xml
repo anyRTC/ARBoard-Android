@@ -65,9 +65,9 @@
 
         <View
             android:id="@+id/menu_mask"
-			android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/menu_card"
@@ -161,7 +161,7 @@
 
                         <TextView
                             android:id="@+id/painter_title"
-							android:layout_width="0dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
@@ -189,7 +189,7 @@
 
                         <TextView
                             android:id="@+id/font_color_title"
-							android:layout_width="0dp"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
@@ -216,7 +216,7 @@
 
                         <TextView
                             android:id="@+id/graffiti_thickness_title"
-							android:layout_width="wrap_content"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="@string/graffitiThickness"
@@ -263,7 +263,7 @@
 
                         <TextView
                             android:id="@+id/font_size_title"
-							android:layout_width="wrap_content"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="@string/fontSize"
@@ -313,11 +313,14 @@
                         android:text="@string/reset" />
 
                     <TextView
+                        android:id="@+id/select_image"
+                        style="@style/style_menu_btn"
+                        android:text="@string/backgroundImage" />
+
+                    <TextView
                         android:id="@+id/title_about_board"
                         style="@style/text_h2title"
-                        android:text="@string/aboutBoard"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/board_editable" />
+                        android:text="@string/aboutBoard" />
 
                     <TextView
                         android:id="@+id/add"
@@ -406,7 +409,7 @@
 
     <View
         android:id="@+id/behavior_mask"
-		android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#00000000"
         android:visibility="gone" />
@@ -725,5 +728,137 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:constraint_referenced_ids="current_color,seek_title_red,seek_red,red_seek_num,seek_title_green,seek_green,green_seek_num,seek_title_blue,seek_blue,blue_seek_num" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dialog_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#88000000">
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/image_dialog_group"
+            android:visibility="gone"
+            app:constraint_referenced_ids="image_dialog_bg,image_dialog_edit,image_dialog_h_l,image_dialog_title,image_dialog_v_l,image_dialog_cancel,image_dialog_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <io.anyrtc.arboarddemo.widget.RoundBackgroundView
+            android:id="@+id/image_dialog_bg"
+            android:layout_width="270dp"
+            android:layout_height="148dp"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias=".35"
+            app:round_background_color="#CCF2F2F2"
+            app:round_radius="14dp" />
+
+        <TextView
+            android:id="@+id/image_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/backgroundImage"
+            android:textColor="#333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/image_dialog_bg"
+            app:layout_constraintRight_toRightOf="@id/image_dialog_bg"
+            app:layout_constraintTop_toTopOf="@id/image_dialog_bg" />
+
+        <EditText
+            android:id="@+id/image_dialog_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:autofillHints="@null"
+            android:background="@drawable/shape_dialog_input"
+            android:hint="@string/backgroundImageUrl"
+            android:inputType="text"
+            android:textColor="#666666"
+            android:textColorHint="#999999"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="@id/image_dialog_bg"
+            app:layout_constraintRight_toRightOf="@id/image_dialog_bg"
+            app:layout_constraintTop_toBottomOf="@id/image_dialog_title" />
+
+        <View
+            android:id="@+id/image_dialog_h_l"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="18dp"
+            android:background="#5C3C3C43"
+            app:layout_constraintLeft_toLeftOf="@id/image_dialog_bg"
+            app:layout_constraintRight_toRightOf="@id/image_dialog_bg"
+            app:layout_constraintTop_toBottomOf="@id/image_dialog_edit" />
+
+        <View
+            android:id="@+id/image_dialog_v_l"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="#5C3C3C43"
+            app:layout_constraintBottom_toBottomOf="@id/image_dialog_bg"
+            app:layout_constraintLeft_toLeftOf="@id/image_dialog_h_l"
+            app:layout_constraintRight_toRightOf="@id/image_dialog_h_l"
+            app:layout_constraintTop_toBottomOf="@id/image_dialog_h_l" />
+
+        <TextView
+            android:id="@+id/image_dialog_cancel"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textColor="#FF007AFF"
+            app:layout_constraintBottom_toBottomOf="@id/image_dialog_bg"
+            app:layout_constraintLeft_toLeftOf="@id/image_dialog_bg"
+            app:layout_constraintRight_toLeftOf="@id/image_dialog_v_l"
+            app:layout_constraintTop_toBottomOf="@id/image_dialog_h_l" />
+
+        <TextView
+            android:id="@+id/image_dialog_confirm"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="@string/confirm"
+            android:textColor="#FF007AFF"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/image_dialog_bg"
+            app:layout_constraintLeft_toRightOf="@id/image_dialog_v_l"
+            app:layout_constraintRight_toRightOf="@id/image_dialog_bg"
+            app:layout_constraintTop_toBottomOf="@id/image_dialog_h_l" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/loading_group"
+            app:constraint_referenced_ids="loading_background,loading_title"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <io.anyrtc.arboarddemo.widget.RoundBackgroundView
+            android:id="@+id/loading_background"
+            app:round_background_color="#BB000000"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="150dp"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:id="@+id/loading_title"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="@id/loading_background"
+            app:layout_constraintRight_toRightOf="@id/loading_background"
+            app:layout_constraintTop_toTopOf="@id/loading_background"
+            app:layout_constraintBottom_toBottomOf="@id/loading_background"
+            android:text="@string/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

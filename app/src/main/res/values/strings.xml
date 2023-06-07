@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ARBoardDemo</string>
+    <string name="app_name">互动白板</string>
     <string name="powered">Powered by anyrtc.io</string>
     <string name="username_please">请输入用户名</string>
     <string name="roomId">请输入房间号</string>
@@ -46,4 +46,7 @@
     <string name="blue">蓝色</string>
     <string name="backgroundColor">背景颜色</string>
     <string name="graffitiThickness">画笔粗细</string>
+    <string name="backgroundImage">背景图片</string>
+    <string name="backgroundImageUrl">背景图片URL</string>
+    <string name="loading">加载中</string>
 </resources>
