@@ -75,7 +75,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="40dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="130dp"
             android:visibility="gone"
             app:cardCornerRadius="8dp"
             app:cardElevation="6dp"
@@ -402,7 +402,35 @@
                             app:round_radius="4dp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/board_ratio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:text="@string/boardRatio"
+                            android:textColor="#666666"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/board_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/defaultRatio"
+                            android:textColor="#999999"
+                            android:textSize="12sp" />
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
+
             </androidx.core.widget.NestedScrollView>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -468,7 +496,7 @@
             android:id="@+id/radio_group_tools"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="6dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@id/tools_confirm">
@@ -738,10 +766,10 @@
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/image_dialog_group"
-            android:visibility="gone"
-            app:constraint_referenced_ids="image_dialog_bg,image_dialog_edit,image_dialog_h_l,image_dialog_title,image_dialog_v_l,image_dialog_cancel,image_dialog_confirm"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="image_dialog_bg,image_dialog_edit,image_dialog_h_l,image_dialog_title,image_dialog_v_l,image_dialog_cancel,image_dialog_confirm" />
 
         <io.anyrtc.arboarddemo.widget.RoundBackgroundView
             android:id="@+id/image_dialog_bg"
@@ -834,31 +862,31 @@
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/loading_group"
-            app:constraint_referenced_ids="loading_background,loading_title"
-            android:visibility="gone"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="loading_background,loading_title" />
 
         <io.anyrtc.arboarddemo.widget.RoundBackgroundView
             android:id="@+id/loading_background"
-            app:round_background_color="#BB000000"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_width="150dp"
-            android:layout_height="50dp" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:round_background_color="#BB000000" />
 
         <TextView
             android:id="@+id/loading_title"
-            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
             android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/loading_background"
             app:layout_constraintLeft_toLeftOf="@id/loading_background"
             app:layout_constraintRight_toRightOf="@id/loading_background"
-            app:layout_constraintTop_toTopOf="@id/loading_background"
-            app:layout_constraintBottom_toBottomOf="@id/loading_background"
-            android:text="@string/loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            app:layout_constraintTop_toTopOf="@id/loading_background" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

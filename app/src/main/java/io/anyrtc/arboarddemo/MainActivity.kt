@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,7 @@ import io.anyrtc.arboard.ARBoardKit
 import io.anyrtc.arboard.ARBoardStructures.ARBoardAuthParam
 import io.anyrtc.arboard.ARBoardStructures.ARBoardBaseParam
 import io.anyrtc.arboarddemo.databinding.ActivityMainBinding
+import io.anyrtc.arboarddemo.databinding.HomePopItemBinding
 import io.anyrtc.arboarddemo.utils.ScreenUtils
 import io.anyrtc.arboarddemo.widget.RoundBackgroundView
 import io.anyrtc.arboarddemo.widget.SeekBarWidget
@@ -31,6 +33,10 @@ class MainActivity : AppCompatActivity() {
   private val mHandler = MyHandler()
   private var doingAnim = false
 
+  private val popWindowView by lazy {
+    HomePopItemBinding.inflate(layoutInflater)
+  }
+
   private val colorTransition = SeekBarWidget.ColorTransition(
     Color.parseColor("#00000000"),
     Color.parseColor("#99000000")
@@ -40,7 +46,7 @@ class MainActivity : AppCompatActivity() {
   private var recordFontColor = Color.BLACK
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    ScreenUtils.adapterScreen(this, 375, false)
+    ScreenUtils.adapterScreen(this, 375, true)
     super.onCreate(savedInstanceState)
     ImmersionBar.with(this).fitsSystemWindows(true)
       .statusBarColor(R.color.white).statusBarDarkFont(true)
@@ -53,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     val appId = resources.getString(R.string.whiteboard_app_id)
     val param = ARBoardBaseParam()
-    param.config.ratio = "3:4"
+    param.config.ratio = "16:9"
     param.config.toolType = ARBoardToolType.AR_BOARD_TOOL_TYPE_NONE
     kit = ARBoardKit(this, ARBoardAuthParam(appId, "", uid), channel, param, mHandler)
     showLoadingDialog()
@@ -63,6 +69,7 @@ class MainActivity : AppCompatActivity() {
     val boardView = kit.arBoardView
     boardView.setBackgroundColor(Color.TRANSPARENT)
     binding.boardParent.addView(boardView)
+    binding.roomId.text = channel
 
     initWidget()
   }
@@ -183,6 +190,10 @@ class MainActivity : AppCompatActivity() {
     }
     menu.setOnClickListener {
       toggleMenuStatus()
+    }
+    exit.setOnClickListener {
+      finish()
+      startActivity(Intent(this@MainActivity, LoginActivity::class.java))
     }
 
     seekRed.setOnProgressChangListener { progress ->
@@ -311,10 +322,7 @@ class MainActivity : AppCompatActivity() {
     boardScaleSeek.setOnProgressChangListener {
       kit.boardScale = it
     }
-    exit.setOnClickListener {
-      finish()
-      startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-    }
+
     dialogParent.setOnClickListener { }
     imageDialogCancel.setOnClickListener { dismissSetImageDialog() }
     imageDialogConfirm.setOnClickListener {
@@ -326,6 +334,26 @@ class MainActivity : AppCompatActivity() {
       kit.setBackgroundImage(src, ARBoardFillMode.AR_BOARD_BACKGROUND_FILL_MODE_CONTAIN)
       dismissSetImageDialog()
     }
+
+    boardRatio.setOnClickListener {
+      val popWindow = PopupWindow(popWindowView.root, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true)
+      popWindow.isTouchable = true
+      val content = boardTitle.text.toString()
+      if (content == "4:3") {
+        popWindowView.popItem.text = "16:9"
+      } else {
+        popWindowView.popItem.text = "4:3"
+      }
+      popWindow.showAsDropDown(boardTitle)
+      popWindowView.popItem.setOnClickListener {
+        popWindow.dismiss()
+        val value = popWindowView.popItem.text.toString()
+        kit.setBoardRatio(value)
+        boardTitle.text = value
+      }
+    }
+
+    // initWidget end
   }
 
   private fun dismissLoadingDialog() = binding.run {
@@ -481,6 +509,7 @@ class MainActivity : AppCompatActivity() {
         val color = kit.backgroundColor
         binding.boardColorPreview.backgroundColor = Color.parseColor(color)
         dismissLoadingDialog()
+        binding.boardTitle.text = kit.boardRatio
       }
       //binding.boardColorPreview.backgroundColor = Color.parseColor(kit.backgroundColor)
     }
@@ -511,6 +540,11 @@ class MainActivity : AppCompatActivity() {
       fillMode: ARBoardFillMode?
     ) {
       Log.e("===", "status=$status, src=$src, fillMode=$fillMode")
+    }
+
+    override fun onBoardRatioChange(boardId: String?, ratio: String?) {
+      if (ratio != null)
+        binding.boardTitle.text = ratio
     }
   }
 
